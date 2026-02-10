@@ -345,10 +345,10 @@ class AudioPreprocessor:
 
 if __name__ == "__main__":
     results = AudioPreprocessor.clean_folder(
-        "recordings/",
+        "../Recordings/",
         out_subfolder="cleaned_audio",
-        gap_length_sec=5.0,
-        noise_mode="global",
+        gap_length_sec=3.0,
+        noise_mode="initial",
     )
 
     for inp, outp, stats in results:
