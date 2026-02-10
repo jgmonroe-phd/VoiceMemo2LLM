@@ -124,7 +124,7 @@ class AudioPreprocessor:
         return float(min_rms)
 
     @staticmethod
-    def estimate_noise_rms_inital(
+    def estimate_noise_rms_initial(
         audio: AudioData,
         *,
         first_seconds: float = 1.0,
@@ -257,7 +257,7 @@ class AudioPreprocessor:
 
         audio = self.io.load(in_path)
         if noise_mode.lower() == 'initial':
-            noise_rms = self.estimate_noise_rms_inital(audio)
+            noise_rms = self.estimate_noise_rms_initial(audio)
         else:
             noise_rms = self.estimate_noise_rms_global(audio)
 
@@ -308,9 +308,12 @@ class AudioPreprocessor:
 
         audio_files = sorted(
             list(folder_path.glob("*.wav")) +
-            list(folder_path.glob("*.mp3"))
+            list(folder_path.glob("*.mp3")) + 
+            list(folder_path.glob("*.WAV")) +
+            list(folder_path.glob("*.MP3"))
         )
 
+        print(f'found {len(audio_files)} audio files in "{folder_path.name}" for processing')
         for in_path in audio_files:
             audio = pre.io.load(in_path)
 
@@ -318,7 +321,7 @@ class AudioPreprocessor:
             if noise_mode == "global":
                 noise_rms = pre.estimate_noise_rms_global(audio)
             elif noise_mode == "initial":
-                noise_rms = pre.estimate_noise_rms(audio)
+                noise_rms = pre.estimate_noise_rms_initial(audio)
             else:
                 raise ValueError("noise_mode must be 'initial' or 'global'")
 
